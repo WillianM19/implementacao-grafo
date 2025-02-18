@@ -44,7 +44,7 @@ class Grafo:
 
         nx.draw(G, with_labels=True)
         plt.show()
-    
+
 if __name__ == "__main__":
     grafo = Grafo()
     
