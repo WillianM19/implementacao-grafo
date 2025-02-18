@@ -2,8 +2,9 @@ import networkx as nx
 import matplotlib.pyplot as plt
 
 class Vertice:
-    def __init__(self, nome):
+    def __init__(self, nome, peso):
         self.nome = nome
+        self.peso = peso
         self.adjacentes = []
         
     def __str__(self):
@@ -47,9 +48,9 @@ class Grafo:
 if __name__ == "__main__":
     grafo = Grafo()
     
-    v1 = Vertice("v1")
-    v2 = Vertice("v2")
-    v3 = Vertice("v3")
+    v1 = Vertice("v1", 5)
+    v2 = Vertice("v2", 6)
+    v3 = Vertice("v3", 7)
     
     grafo.adicionar_vertice(v1)
     grafo.adicionar_vertice(v2)
