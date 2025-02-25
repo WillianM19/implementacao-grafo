@@ -3,7 +3,8 @@ Implemente um sistema de rotas de transporte em que cada cidade é um vértice e
 Use BFS para encontrar o caminho com menor número de paradas entre duas cidades.
 """
 
-from BFS import BFS_saltos
+from BFS import bfs_menor_custo
+from DFS import dfs_maior_custo
 from grafo import Grafo, Vertice
 
 # Montando Sistema de rotas de trasporte
@@ -23,6 +24,10 @@ rotas.adicionar_aresta("cidade3", "cidade1")
 
 rotas.exibir_graficamente()
 
-# Executando BFS
-resultado = BFS_saltos(rotas, "cidade1", "cidade2")
-print(resultado)
+# Executando BFS (Menor custo)
+resultado = bfs_menor_custo(rotas, "cidade1", "cidade2")
+print("Resultado BFS (Menor custo):", resultado)
+
+# Executando DFS (Maior custo)
+resultado = dfs_maior_custo(rotas, "cidade1", "cidade2", 0, ["cidade1"])
+print("Resultado DFS (Maior custo):", resultado)
