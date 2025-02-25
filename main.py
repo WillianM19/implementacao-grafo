@@ -40,3 +40,11 @@ print("Resultado BFS (Caminho com menor número de paradas):", resultado) # 2
 # Executando DFS (Maior custo)
 resultado = dfs_maior_custo(rotas, "cidade1", "cidade4")
 print("Resultado DFS (Caminho com maior custo em peso arestas):", resultado[0]) # 10
+
+# Lendo arquivo csv
+grafo_csv = Grafo()
+
+print("Lendo arquivo csv...\n")
+grafo_csv.ler_csv("csv_grafo.csv")
+
+grafo_csv.exibir_graficamente()

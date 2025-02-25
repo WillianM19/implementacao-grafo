@@ -1,5 +1,6 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+import csv
 
 class Vertice:
     def __init__(self, nome):
@@ -49,6 +50,22 @@ class Grafo:
         nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
         
         plt.show()
+    
+    def ler_csv(self, arquivo_csv):
+        with open(arquivo_csv, mode='r') as file:
+            csv_reader = csv.DictReader(file)
+            for linha in csv_reader:
+                origem = linha['Origem']
+                destino = linha['Destino']
+                peso = int(linha['Peso'])
+                
+                if origem not in self.vertices:
+                    self.adicionar_vertice(Vertice(origem))
+                
+                if destino not in self.vertices:
+                    self.adicionar_vertice(Vertice(destino))
+                
+                self.adicionar_aresta(origem, destino, peso)
 
 
 if __name__ == "__main__":
