@@ -15,7 +15,7 @@ def bfs_menor_custo(grafo, origem, destino):
             if vertice_atual == destino:
                 return saltos
             
-            for adjacente in grafo.vertices[vertice_atual].adjacentes:
+            for adjacente, peso in grafo.vertices[vertice_atual].adjacentes:
                 if adjacente not in visitados:
                     visitados.append(adjacente)
                     fila.append(adjacente)

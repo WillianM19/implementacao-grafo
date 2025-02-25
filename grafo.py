@@ -57,14 +57,18 @@ if __name__ == "__main__":
     v1 = Vertice("v1")
     v2 = Vertice("v2")
     v3 = Vertice("v3")
+    v4 = Vertice("v4")
     
     grafo.adicionar_vertice(v1)
     grafo.adicionar_vertice(v2)
     grafo.adicionar_vertice(v3)
+    grafo.adicionar_vertice(v4)
 
     grafo.adicionar_aresta("v1", "v2")
     grafo.adicionar_aresta("v2", "v3")
-    grafo.adicionar_aresta("v3", "v1")
+    grafo.adicionar_aresta("v2", "v4")
+    grafo.adicionar_aresta("v3", "v4")
+    grafo.adicionar_aresta("v4", "v1")
     
     grafo.exibir_grafo()
     
