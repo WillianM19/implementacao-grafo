@@ -1,5 +1,6 @@
 import networkx as nx
 import matplotlib.pyplot as plt
+import matplotlib.animation as animation
 import csv
 
 class Vertice:
@@ -10,10 +11,9 @@ class Vertice:
     def __str__(self):
         content = f"Vertice: {self.nome}"
         
-        if self.adjacentes:
-            adjacentes_str = ", ".join([f"{v[0]}(peso={v[1]})" for v in self.adjacentes])
-            content += f" | Adjacentes = {adjacentes_str}"
-        
+        if (self.adjacentes):
+            content = f"Vertice: {content} | Adjacentes =  {", ".join(self.adjacentes)}"
+
         return content
 
 class Grafo:
@@ -33,7 +33,7 @@ class Grafo:
         for vertice in self.vertices.values():
             print(vertice)
             
-    def exibir_graficamente(self):
+    def exibir_graficamente(self, caminho=None):
         G = nx.Graph()
 
         for vertice in self.vertices:
@@ -44,11 +44,44 @@ class Grafo:
                 G.add_edge(vertice, adjacente, weight=peso)
 
         pos = nx.spring_layout(G)
-        nx.draw(G, pos, with_labels=True, node_size=1000, node_color="lightblue")
         
-        edge_labels = nx.get_edge_attributes(G, 'weight')
-        nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels)
+        fig, ax = plt.subplots(figsize=(8, 8))
         
+        def update(num, nodes, edges, ax):
+            ax.clear()
+            
+            # Exibir os vértices
+            if num < len(nodes):
+                # Desenha os nós até o quadro atual
+                nx.draw_networkx_nodes(G, pos, nodelist=nodes[:num+1], node_size=1000, node_color="lightblue", ax=ax)
+                nx.draw_networkx_labels(G, pos, labels={n: n for n in nodes[:num+1]}, ax=ax)
+                plt.title(f"Adicionando vértices: Passo {num+1}")
+            
+            # Exibir as arestas
+            else:
+                nx.draw_networkx_nodes(G, pos, nodelist=nodes, node_size=1000, node_color="lightblue", ax=ax)
+                nx.draw_networkx_labels(G, pos, ax=ax)
+                
+                edge_index = num - len(nodes)
+                if edge_index < len(edges):
+                    nx.draw_networkx_edges(G, pos, edgelist=edges[:edge_index+1], ax=ax)
+                    
+                    # Desenhas os pesos
+                    edge_labels = {(u, v): d['weight'] for u, v, d in G.edges(data=True) if (u, v) in edges[:edge_index+1]}
+                    nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, ax=ax)
+                    plt.title(f"Adicionando arestas: Passo {edge_index+1}")
+        
+        nodes = list(G.nodes())
+        edges = list(G.edges())
+        
+        # Cria a animação
+        ani = animation.FuncAnimation(
+            fig, update, 
+            frames=len(nodes) + len(edges),
+            fargs=(nodes, edges, ax), 
+            interval=500,  # Delay de animação
+            repeat=False
+        )
         plt.show()
     
     def ler_csv(self, arquivo_csv):

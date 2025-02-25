@@ -33,11 +33,11 @@ rotas.exibir_graficamente()
 
 print("Viagem de cidade1 para cidade4:\n")
 
-# Executando BFS (Menor custo)
+# BFS
 resultado = bfs_menor_custo(rotas, "cidade1", "cidade4")
 print("Resultado BFS (Caminho com menor número de paradas):", resultado) # 2
 
-# Executando DFS (Maior custo)
+# DFS
 resultado = dfs_maior_custo(rotas, "cidade1", "cidade4")
 print("Resultado DFS (Caminho com maior custo em peso arestas):", resultado[0]) # 10
 
