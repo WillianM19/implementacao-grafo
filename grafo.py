@@ -55,13 +55,11 @@ class Grafo:
         for vertice in self.vertices.values():
             print(vertice)
             
-    def exibir_graficamente(self, caminho=None):
+    def exibir_graficamente(self, caminho=None, custoTotal=None):
         G = nx.Graph()
 
         for vertice in self.vertices:
             G.add_node(vertice)
-
-        for vertice in self.vertices:
             for adjacente, peso in self.vertices[vertice].adjacentes:
                 G.add_edge(vertice, adjacente, weight=peso)
 
@@ -71,44 +69,39 @@ class Grafo:
         def update(num, nodes, edges, ax):
             ax.clear()
 
-            if caminho:
-                caminho_edges = [(caminho[i], caminho[i + 1]) for i in range(len(caminho) - 1)]
-                subgraph_nodes = set(caminho)
-                subgraph_edges = [(u, v) for u, v in G.edges() if (u, v) in caminho_edges or (v, u) in caminho_edges]
+            # Desenha todos os nós
+            nx.draw_networkx_nodes(G, pos, nodelist=nodes, node_size=1000, node_color="lightblue", ax=ax)
+            nx.draw_networkx_labels(G, pos, labels={n: n for n in nodes}, ax=ax)
 
-                nx.draw_networkx_nodes(G, pos, nodelist=subgraph_nodes, node_size=1000, node_color="lightgreen", ax=ax)
-                nx.draw_networkx_labels(G, pos, labels={n: n for n in subgraph_nodes}, ax=ax)
-                nx.draw_networkx_edges(G, pos, edgelist=subgraph_edges, edge_color="red", width=2, ax=ax)
-
-                edge_labels = {(u, v): G[u][v]['weight'] for u, v in subgraph_edges}
+            if num < len(edges):
+                # Desenha as arestas(Atual)
+                nx.draw_networkx_edges(G, pos, edgelist=edges[:num + 1], ax=ax)
+                edge_labels = {(u, v): d['weight'] for u, v, d in G.edges(data=True) if (u, v) in edges[:num + 1]}
                 nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, ax=ax)
-
-                plt.title("Caminho Específico")
+                plt.title(f"Adicionando arestas: Passo {num + 1}")
             else:
-                if num < len(nodes):
-                    nx.draw_networkx_nodes(G, pos, nodelist=nodes[:num + 1], node_size=1000, node_color="lightblue", ax=ax)
-                    nx.draw_networkx_labels(G, pos, labels={n: n for n in nodes[:num + 1]}, ax=ax)
-                    plt.title(f"Adicionando vértices: Passo {num + 1}")
-                else:
-                    nx.draw_networkx_nodes(G, pos, nodelist=nodes, node_size=1000, node_color="lightblue", ax=ax)
-                    nx.draw_networkx_labels(G, pos, ax=ax)
+                # Desenha todas as arestas
+                nx.draw_networkx_edges(G, pos, edgelist=edges, ax=ax)
+                edge_labels = {(u, v): d['weight'] for u, v, d in G.edges(data=True)}
+                nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, ax=ax)
+                plt.title(f"Grafo Finalizado. Custo Total: {custoTotal}")
 
-                    edge_index = num - len(nodes)
-                    if edge_index < len(edges):
-                        nx.draw_networkx_edges(G, pos, edgelist=edges[:edge_index + 1], ax=ax)
-
-                        edge_labels = {(u, v): d['weight'] for u, v, d in G.edges(data=True) if (u, v) in edges[:edge_index + 1]}
-                        nx.draw_networkx_edge_labels(G, pos, edge_labels=edge_labels, ax=ax)
-                        plt.title(f"Adicionando arestas: Passo {edge_index + 1}")
+                # Destaca o caminho
+                if caminho:
+                    caminho_edges = [(caminho[i], caminho[i + 1]) for i in range(len(caminho) - 1)]
+                    subgraph_nodes = set(caminho)
+                    subgraph_edges = [(u, v) for u, v in G.edges() if (u, v) in caminho_edges or (v, u) in caminho_edges]
+                    nx.draw_networkx_nodes(G, pos, nodelist=subgraph_nodes, node_size=1000, node_color="lightgreen", ax=ax)
+                    nx.draw_networkx_edges(G, pos, edgelist=subgraph_edges, edge_color="red", width=2, ax=ax)
 
         nodes = list(G.nodes())
         edges = list(G.edges())
 
         ani = animation.FuncAnimation(
             fig, update,
-            frames=len(nodes) + len(edges),
+            frames=len(edges) + 1,
             fargs=(nodes, edges, ax),
-            interval=200,
+            interval=150,
             repeat=False
         )
         plt.show()

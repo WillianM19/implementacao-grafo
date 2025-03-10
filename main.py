@@ -9,8 +9,7 @@ grafo.ler_csv("csv_grafo.csv")
 
 melhor_custo, melhor_caminho = tsp_dfs("A", grafo=grafo)
 
-grafo.exibir_graficamente()
-grafo.exibir_graficamente(melhor_caminho)
+grafo.exibir_graficamente(melhor_caminho, melhor_custo)
 
 print(f'Melhor Custo: {melhor_custo}')
 print(f'Melhor Caminho: {melhor_caminho}')
