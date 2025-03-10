@@ -2,7 +2,7 @@
 
 Desenvolvido durante a disciplina de estrutura de dados não lineares - IFRN 2025
 
-![image](https://github.com/user-attachments/assets/a9b4f331-ad70-4b94-8fcd-134a30440985)
+![image](https://github.com/user-attachments/assets/34cebeae-fff0-4cb5-b6a6-58269f5a09ed)
 
 
 # Execução
